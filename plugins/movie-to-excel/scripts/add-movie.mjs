@@ -118,7 +118,7 @@ for (const [category, card] of Object.entries(cards)) {
   const [titleCol, directorCol, yearCol, dateCol] = card.columns;
   const range = overview.getRange(`${titleCol}${card.startRow}:${dateCol}504`);
   range.clear({ applyTo: "contents" });
-  const categoryRows = updatedRows.filter((row) => row[6] === category).slice().reverse();
+  const categoryRows = updatedRows.filter((row) => row[6] === category);
   categoryRows.forEach((row, index) => {
     const displayTitle = row[2] && normalize(row[2]) !== normalize(row[1]) ? `${row[1]} / ${row[2]}` : row[1];
     const targetRow = card.startRow + index;
