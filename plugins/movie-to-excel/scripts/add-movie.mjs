@@ -117,7 +117,6 @@ const bottomStartRow = 7 + topCount + 5;
 overview.getRange("A13:L504").clear({ applyTo: "contents" });
 const bottomHeaderRow = bottomStartRow - 3;
 overview.getRange(`A${bottomHeaderRow}:L${bottomHeaderRow + 2}`).unmerge();
-for (const range of [`A${bottomHeaderRow}:D${bottomHeaderRow}`, `E${bottomHeaderRow}:H${bottomHeaderRow}`, `I${bottomHeaderRow}:L${bottomHeaderRow}`, `A${bottomHeaderRow + 1}:D${bottomHeaderRow + 1}`, `E${bottomHeaderRow + 1}:H${bottomHeaderRow + 1}`, `I${bottomHeaderRow + 1}:L${bottomHeaderRow + 1}`]) overview.getRange(range).merge();
 for (const range of [`A${bottomHeaderRow}:L${bottomHeaderRow}`, `A${bottomHeaderRow + 2}:L${bottomHeaderRow + 2}`]) overview.getRange(range).format = { fill: "#1F3A5F", font: { name: "Arial", size: 10, color: "#FFFFFF", bold: true }, horizontalAlignment: "center", verticalAlignment: "center" };
 overview.getRange(`A${bottomHeaderRow + 1}:L${bottomHeaderRow + 1}`).format = { fill: "#FFF4C2", font: { name: "Arial", size: 10, color: "#1F3A5F", bold: true }, horizontalAlignment: "center", verticalAlignment: "center" };
 overview.getRange(`A${bottomHeaderRow}`).values = [["美国"]];
