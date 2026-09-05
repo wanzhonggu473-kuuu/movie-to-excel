@@ -34,7 +34,7 @@ If a title is ambiguous, the plugin asks for the year or version before writing.
 
 ## Workbook structure
 
-- `我的电影`: fixed-height overview, with Mainland China, Hong Kong, and Taiwan on the first row and the United States, Europe/Oceania, and other regions on the second.
+- `我的电影`: complete region overview, with Mainland China, Hong Kong, and Taiwan on the first row and the United States, Europe/Oceania, and other regions on the second. Each region lists all of its records.
 - `地区横向`: complete horizontal region layout.
 - `标准清单`: searchable and sortable list.
 - `电影数据库`: canonical row-based data source.

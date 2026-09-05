@@ -36,7 +36,7 @@ The command refuses accidental in-place overwrites and title-plus-year duplicate
 Use `assets/movie-archive-template.xlsx` as the default workbook structure. The workbook separates the canonical data from its presentation:
 
 - `电影数据库`: one movie per row and the only authoritative data source.
-- `我的电影`: a fixed-height region overview with counts and recent records.
+- `我的电影`: a complete region overview with counts and all records.
 - `地区横向`: the full horizontal region layout.
 - `标准清单`: a searchable, sortable view linked to the database.
 - `统计`: local summary formulas.
@@ -44,7 +44,7 @@ Use `assets/movie-archive-template.xlsx` as the default workbook structure. The 
 
 The user can select `地区概览`, `地区横向完整`, or `标准清单` as the preferred presentation mode. Keep all three views available so the user can explore and customize them. The database remains the only source of truth even when a presentation view groups or repeats information.
 
-Default to `地区概览`. It has fixed-height cards so a large collection in one region does not create excessive blank space elsewhere. Each card has five visible record rows with four fields: `片名（中文 / English）`, `导演`, `年份`, and `观影日期`. Keep unused rows blank so users can fill them manually. The plugin refreshes these recent-record rows after adding a movie.
+Default to `地区概览`. Each regional block lists all records and expands downward as needed, with four fields: `片名（中文 / English）`, `导演`, `年份`, and `观影日期`. The plugin refreshes the full regional lists after adding a movie.
 
 The canonical database uses these fields:
 
