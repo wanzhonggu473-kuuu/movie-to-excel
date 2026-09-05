@@ -112,13 +112,19 @@ list.getRange("F:F").format.columnWidth = 18;
 
 const updatedRows = db.getRange("A5:L504").values.filter((row) => String(row?.[1] ?? "").trim());
 const overview = wb.worksheets.getItem("我的电影");
+const topCategories = ["中国大陆", "香港", "台湾"];
+const topCount = Math.max(...topCategories.map((category) => updatedRows.filter((row) => row[6] === category).length), 5);
+const bottomStartRow = 7 + topCount + 5;
+overview.getRange("A13:L15").copyTo(overview.getRange(`A${bottomStartRow - 3}:L${bottomStartRow - 1}`), "all");
+overview.getRange(`A${bottomStartRow - 3}:L${bottomStartRow - 1}`).format.rowHeight = 24;
+overview.getRange("A13:L504").clear({ applyTo: "contents" });
 const cards = {
   "中国大陆": { columns: ["A", "B", "C", "D"], startRow: 7, endRow: 11 },
   "香港": { columns: ["E", "F", "G", "H"], startRow: 7, endRow: 11 },
   "台湾": { columns: ["I", "J", "K", "L"], startRow: 7, endRow: 11 },
-  "美国": { columns: ["A", "B", "C", "D"], startRow: 16, endRow: 20 },
-  "欧洲/大洋洲": { columns: ["E", "F", "G", "H"], startRow: 16, endRow: 20 },
-  "其他地区": { columns: ["I", "J", "K", "L"], startRow: 16, endRow: 20 },
+  "美国": { columns: ["A", "B", "C", "D"], startRow: bottomStartRow, endRow: bottomStartRow + 4 },
+  "欧洲/大洋洲": { columns: ["E", "F", "G", "H"], startRow: bottomStartRow, endRow: bottomStartRow + 4 },
+  "其他地区": { columns: ["I", "J", "K", "L"], startRow: bottomStartRow, endRow: bottomStartRow + 4 },
 };
 for (const [category, card] of Object.entries(cards)) {
   const [titleCol, directorCol, yearCol, dateCol] = card.columns;
