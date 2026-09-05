@@ -1,0 +1,20 @@
+{
+  "name": "movie-to-excel",
+  "interface": {
+    "displayName": "Movie to Excel"
+  },
+  "plugins": [
+    {
+      "name": "movie-to-excel",
+      "source": {
+        "source": "local",
+        "path": "./plugins/movie-to-excel"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

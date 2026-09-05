@@ -1,0 +1,18 @@
+{
+  "name": "movie-to-excel",
+  "version": "0.5.0",
+  "description": "Turn a movie title or poster into a private, local-first Excel movie archive.",
+  "author": {
+    "name": "Movie To Excel contributors"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Movie To Excel",
+    "shortDescription": "Build a private local movie archive in Excel.",
+    "longDescription": "Identify a movie from a title or poster, verify its metadata, and generate a private local-first Excel archive without accounts, social features, or platform lock-in.",
+    "developerName": "Movie To Excel contributors",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Create an Excel movie record from the movie title or poster I provide."
+  }
+}

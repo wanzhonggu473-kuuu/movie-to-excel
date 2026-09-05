@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+~$*.xlsx
+outputs/
+node_modules/
+*.inspect.ndjson
+*.xlsx~
+personal-archives/
