@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1
+
+- Respect user-provided historical viewing dates; do not silently replace them with today's date.
+- Leave the structured date blank for imprecise phrases such as “以前看过”, while preserving the context in notes.
+
 ## 0.5.0
 
 - Added a local-first Excel archive with region overview, horizontal region view, standard list, statistics, and settings.

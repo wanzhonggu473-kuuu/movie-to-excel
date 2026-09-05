@@ -1,6 +1,6 @@
 {
   "name": "movie-to-excel",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Turn a movie title or poster into a private, local-first Excel movie archive.",
   "author": {
     "name": "Movie To Excel contributors"

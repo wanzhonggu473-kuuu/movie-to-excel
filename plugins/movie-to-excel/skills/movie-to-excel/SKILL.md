@@ -16,12 +16,12 @@ This is a private, local-first record-keeping workflow rather than a movie-ratin
 3. Classify the movie into one production-region category. If several countries co-produced it, retain the countries and choose the category that best represents the credited production.
 4. Generate a local `.xlsx` workbook unless the user explicitly supplies an existing workbook to update. Use `scripts/add-movie.mjs` after metadata is verified; pass the verified fields as JSON rather than making the script guess them.
 5. Preserve an existing workbook's layout and formatting when updating it. The script writes the canonical database first, then refreshes `我的电影`, `地区横向`, and the matching `标准清单` row.
-6. Use the user's stated viewing date. If none is supplied, use the current local date and make that assumption clear.
+6. Use the user's stated viewing date exactly, even when it is earlier than today. Interpret phrases such as “I watched it before” only as historical context: do not invent a precise date. If the user gives only a year or month, preserve that partial date in notes and leave the structured date blank. If no viewing date is supplied, use the current local date and make that assumption clear.
 7. Check for duplicate records, missing required fields, clipped text, abnormal row heights, and spreadsheet errors before delivery.
 
 ## Add-movie input contract
 
-Provide `title`, `director`, `year`, `country`, `region`, `watchedDate`, and `sourceUrl`. `originalTitle`, `genre`, `rating`, and `notes` are optional. Use `yyyy-mm-dd` for `watchedDate`; ratings use a 0–10 scale.
+Provide `title`, `director`, `year`, `country`, `region`, `watchedDate`, and `sourceUrl`. `originalTitle`, `genre`, `rating`, and `notes` are optional. Use `yyyy-mm-dd` for a known `watchedDate`; never replace a user-provided historical date with today's date. If the user gives an imprecise date, keep the wording in `notes` and leave `watchedDate` blank.
 
 Run the writer from an environment where the bundled spreadsheet runtime is available:
 

@@ -30,7 +30,7 @@ Add A City of Sadness to my movie archive. I watched it today.
 Identify this poster and add the movie to my existing Excel archive. My rating is 8.5.
 ```
 
-If a title is ambiguous, the plugin asks for the year or version before writing. If no viewing date is supplied, it uses the user's current local date and states that assumption.
+If a title is ambiguous, the plugin asks for the year or version before writing. A viewing date supplied by the user always wins, including an earlier date. If the user only says they watched it before, the plugin does not guess a date; if no date is supplied at all, it uses the current local date and states that assumption.
 
 ## Workbook structure
 
