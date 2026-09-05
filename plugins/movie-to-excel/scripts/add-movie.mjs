@@ -29,6 +29,17 @@ function excelDate(isoDate) {
   return date;
 }
 
+function displayWatchDate(value) {
+  if (value === null || value === undefined || value === "") return "";
+  if (value instanceof Date) {
+    const yy = String(value.getFullYear()).slice(-2);
+    const mm = String(value.getMonth() + 1).padStart(2, "0");
+    const dd = String(value.getDate()).padStart(2, "0");
+    return `${yy}-${mm}-${dd}`;
+  }
+  return String(value).replace(/^20(?=\d{2}(?:-|$))/, "").replace(/^'/, "");
+}
+
 function validateMovie(movie) {
   const missing = REQUIRED.filter((field) => movie[field] === undefined || String(movie[field]).trim() === "");
   if (missing.length) throw new Error(`缺少必要字段：${missing.join(", ")}`);
@@ -106,6 +117,20 @@ const bottomStartRow = 7 + topCount + 5;
 overview.getRange("A13:L15").copyTo(overview.getRange(`A${bottomStartRow - 3}:L${bottomStartRow - 1}`), "all");
 overview.getRange(`A${bottomStartRow - 3}:L${bottomStartRow - 1}`).format.rowHeight = 24;
 overview.getRange("A13:L504").clear({ applyTo: "contents" });
+const bottomHeaderRow = bottomStartRow - 3;
+overview.getRange(`A${bottomHeaderRow}`).values = [["美国"]];
+overview.getRange(`E${bottomHeaderRow}`).values = [["欧洲/大洋洲"]];
+overview.getRange(`I${bottomHeaderRow}`).values = [["其他地区"]];
+for (const [category, col] of [["美国", "A"], ["欧洲/大洋洲", "E"], ["其他地区", "I"]]) {
+  const count = updatedRows.filter((row) => row[6] === category).length;
+  overview.getRange(`${col}${bottomHeaderRow + 1}`).values = [[`${count} 部`]];
+}
+for (const col of ["A", "E", "I"]) {
+  overview.getRange(`${col}${bottomHeaderRow + 2}`).values = [["片名（中文 / English）"]];
+}
+for (const col of ["B", "F", "J"]) overview.getRange(`${col}${bottomHeaderRow + 2}`).values = [["导演"]];
+for (const col of ["C", "G", "K"]) overview.getRange(`${col}${bottomHeaderRow + 2}`).values = [["年份"]];
+for (const col of ["D", "H", "L"]) overview.getRange(`${col}${bottomHeaderRow + 2}`).values = [["观影日期"]];
 const cards = {
   "中国大陆": { columns: ["A", "B", "C", "D"], startRow: 7, endRow: 11 },
   "香港": { columns: ["E", "F", "G", "H"], startRow: 7, endRow: 11 },
@@ -122,9 +147,9 @@ for (const [category, card] of Object.entries(cards)) {
   categoryRows.forEach((row, index) => {
     const displayTitle = row[2] && normalize(row[2]) !== normalize(row[1]) ? `${row[1]} / ${row[2]}` : row[1];
     const targetRow = card.startRow + index;
-    overview.getRange(`${titleCol}${targetRow}:${dateCol}${targetRow}`).values = [[displayTitle, row[3], row[4], row[8]]];
+    overview.getRange(`${titleCol}${targetRow}:${dateCol}${targetRow}`).values = [[displayTitle, row[3], row[4], displayWatchDate(row[8])]];
     overview.getRange(`${yearCol}${targetRow}`).format.numberFormat = "0";
-    overview.getRange(`${dateCol}${targetRow}`).format.numberFormat = "yy-mm-dd";
+    overview.getRange(`${dateCol}${targetRow}`).format.numberFormat = "@";
   });
 }
 
@@ -139,11 +164,11 @@ for (const [category, config] of Object.entries(horizontalGroups)) {
   const categoryRows = updatedRows.filter((row) => row[6] === category);
   categoryRows.forEach((row, index) => {
     const displayTitle = row[2] && normalize(row[2]) !== normalize(row[1]) ? `${row[1]} / ${row[2]}` : row[1];
-    const values = [displayTitle, row[3], row[4], row[8]];
+    const values = [displayTitle, row[3], row[4], displayWatchDate(row[8])];
     if (config.country) values.push(row[5]);
     horizontal.getRangeByIndexes(5 + index, config.start, 1, values.length).values = [values];
     horizontal.getRangeByIndexes(5 + index, config.start + 2, 1, 1).format.numberFormat = "0";
-    horizontal.getRangeByIndexes(5 + index, config.start + 3, 1, 1).format.numberFormat = "yy-mm-dd";
+    horizontal.getRangeByIndexes(5 + index, config.start + 3, 1, 1).format.numberFormat = "@";
   });
 }
 
