@@ -48,8 +48,8 @@ async function loadMovie(args) {
 }
 
 function findFirstBlank(rows) {
-  const index = rows.findIndex((row) => !String(row?.[1] ?? "").trim());
-  if (index < 0) throw new Error("电影数据库已达到 500 条容量，请先扩展模板");
+  const index = rows.findIndex((row) => !String(row?.[0] ?? "").trim());
+  if (index < 0) throw new Error("标准清单已达到 500 条容量，请先扩展模板");
   return index;
 }
 
@@ -65,14 +65,13 @@ const movie = await loadMovie(args);
 validateMovie(movie);
 
 const wb = await SpreadsheetFile.importXlsx(await FileBlob.load(inputPath));
-const db = wb.worksheets.getItem("电影数据库");
-const dbRange = db.getRange("A5:L504");
-const rows = dbRange.values;
+const list = wb.worksheets.getItem("标准清单");
+const rows = list.getRange("A5:K504").values;
 
 const titleKey = normalize(movie.originalTitle || movie.title);
 const duplicate = rows.find((row) => {
-  const existingKey = normalize(row?.[2] || row?.[1]);
-  return existingKey && existingKey === titleKey && Number(row?.[4]) === Number(movie.year);
+  const existingKey = normalize(row?.[1] || row?.[0]);
+  return existingKey && existingKey === titleKey && Number(row?.[3]) === Number(movie.year);
 });
 if (duplicate && !args["allow-duplicate"]) {
   throw new Error(`检测到重复记录：${duplicate[1] || duplicate[2]} (${duplicate[4]})；如确需重复记录，请添加 --allow-duplicate`);
@@ -80,10 +79,7 @@ if (duplicate && !args["allow-duplicate"]) {
 
 const rowIndex = findFirstBlank(rows);
 const sheetRow = rowIndex + 5;
-const usedCount = rows.filter((row) => String(row?.[1] ?? "").trim()).length;
-const recordId = `M${String(usedCount + 1).padStart(4, "0")}`;
 const record = [
-  recordId,
   String(movie.title).trim(),
   String(movie.originalTitle || "").trim(),
   String(movie.director).trim(),
@@ -96,21 +92,13 @@ const record = [
   String(movie.notes || "").trim(),
   String(movie.sourceUrl).trim(),
 ];
-db.getRange(`A${sheetRow}:L${sheetRow}`).values = [record];
-db.getRange(`E${sheetRow}`).format.numberFormat = "0";
-db.getRange(`I${sheetRow}`).format.numberFormat = "yyyy-mm-dd";
-db.getRange("F:F").format.columnWidth = 28;
-db.getRange("G:G").format.columnWidth = 18;
-
-const list = wb.worksheets.getItem("标准清单");
-const sourceCols = ["B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
-list.getRange(`A${sheetRow}:K${sheetRow}`).formulas = [[...sourceCols.map((col) => `=IF('电影数据库'!${col}${sheetRow}="","",'电影数据库'!${col}${sheetRow})`)]];
+list.getRange(`A${sheetRow}:K${sheetRow}`).values = [record];
 list.getRange(`D${sheetRow}`).format.numberFormat = "0";
 list.getRange(`H${sheetRow}`).format.numberFormat = "yyyy-mm-dd";
 list.getRange("E:E").format.columnWidth = 28;
 list.getRange("F:F").format.columnWidth = 18;
 
-const updatedRows = db.getRange("A5:L504").values.filter((row) => String(row?.[1] ?? "").trim());
+const updatedRows = list.getRange("A5:K504").values.filter((row) => String(row?.[0] ?? "").trim()).map((row) => ["", ...row]);
 const overview = wb.worksheets.getItem("我的电影");
 const topCategories = ["中国大陆", "香港", "台湾"];
 const topCount = Math.max(...topCategories.map((category) => updatedRows.filter((row) => row[6] === category).length), 5);
@@ -162,4 +150,4 @@ for (const [category, config] of Object.entries(horizontalGroups)) {
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
 const output = await SpreadsheetFile.exportXlsx(wb);
 await output.save(outputPath);
-console.log(JSON.stringify({ ok: true, output: outputPath, recordId, title: movie.title, region: movie.region }, null, 2));
+console.log(JSON.stringify({ ok: true, output: outputPath, title: movie.title, region: movie.region }, null, 2));

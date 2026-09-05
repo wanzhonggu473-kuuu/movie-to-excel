@@ -6,7 +6,7 @@ Movie to Excel is an open-source, local-first Codex plugin that turns a movie ti
 
 Give Codex a movie title, poster, or screenshot. The plugin resolves the exact film, verifies its Chinese and official English titles, director, year, production region, genre, and source, then creates or updates a local `.xlsx` archive. It detects likely duplicates and keeps personal ratings and notes private.
 
-The included workbook offers three interchangeable views: a two-row region overview, a complete horizontal region layout, and a searchable standard list. A row-based database remains the single source of truth, so presentation can change without losing records.
+The included workbook offers a region overview, a complete horizontal region layout, and a searchable standard list. `标准清单` is the single source of truth, so presentation can change without losing records.
 
 ## Install from GitHub
 
@@ -37,7 +37,6 @@ If a title is ambiguous, the plugin asks for the year or version before writing.
 - `我的电影`: complete region overview, with Mainland China, Hong Kong, and Taiwan on the first row and the United States, Europe/Oceania, and other regions on the second. Each region lists all of its records.
 - `地区横向`: complete horizontal region layout.
 - `标准清单`: searchable and sortable list.
-- `电影数据库`: canonical row-based data source.
 - `统计`: local totals by region.
 - `设置`: presentation, language, date, and lookup preferences.
 
