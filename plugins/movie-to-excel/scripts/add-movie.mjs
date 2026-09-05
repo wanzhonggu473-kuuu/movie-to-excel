@@ -94,7 +94,7 @@ const record = [
 ];
 list.getRange(`A${sheetRow}:K${sheetRow}`).values = [record];
 list.getRange(`D${sheetRow}`).format.numberFormat = "0";
-list.getRange(`H${sheetRow}`).format.numberFormat = "yyyy-mm-dd";
+list.getRange(`H${sheetRow}`).format.numberFormat = "yy-mm-dd";
 list.getRange("E:E").format.columnWidth = 28;
 list.getRange("F:F").format.columnWidth = 18;
 
@@ -124,7 +124,7 @@ for (const [category, card] of Object.entries(cards)) {
     const targetRow = card.startRow + index;
     overview.getRange(`${titleCol}${targetRow}:${dateCol}${targetRow}`).values = [[displayTitle, row[3], row[4], row[8]]];
     overview.getRange(`${yearCol}${targetRow}`).format.numberFormat = "0";
-    overview.getRange(`${dateCol}${targetRow}`).format.numberFormat = "yyyy-mm-dd";
+    overview.getRange(`${dateCol}${targetRow}`).format.numberFormat = "yy-mm-dd";
   });
 }
 
@@ -143,7 +143,7 @@ for (const [category, config] of Object.entries(horizontalGroups)) {
     if (config.country) values.push(row[5]);
     horizontal.getRangeByIndexes(5 + index, config.start, 1, values.length).values = [values];
     horizontal.getRangeByIndexes(5 + index, config.start + 2, 1, 1).format.numberFormat = "0";
-    horizontal.getRangeByIndexes(5 + index, config.start + 3, 1, 1).format.numberFormat = "yyyy-mm-dd";
+    horizontal.getRangeByIndexes(5 + index, config.start + 3, 1, 1).format.numberFormat = "yy-mm-dd";
   });
 }
 
