@@ -4,7 +4,7 @@ Use these principles to evaluate features and resolve product tradeoffs.
 
 ## Positioning
 
-Movie to Excel is a private local movie archive. Its purpose is to help people preserve their own viewing history in an ordinary file they control. It is not a review community or social network.
+Movie to Excel is a private local archive for movies, TV series, and documentaries. Its purpose is to help people preserve their own viewing history in an ordinary file they control. It is not a review community or social network.
 
 ## Principles
 

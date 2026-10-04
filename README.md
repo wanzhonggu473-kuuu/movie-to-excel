@@ -1,75 +1,80 @@
 # Movie to Excel
 
-Movie to Excel is an open-source, local-first Codex plugin that turns a movie title or poster into a private Excel viewing archive. The workbook stays on the user's computer; internet access is used only to identify a movie and verify public metadata.
+Movie to Excel is a local-first Codex plugin for keeping a private Excel archive of movies, TV series, and documentaries. Give Codex a title or poster and, after identifying the work, it can add a record to a workbook on your computer. Public metadata lookup may use the internet; your viewing history stays in the local file.
 
 ![Movie archive region overview](docs/images/movie-archive-overview.png)
 
 ## Why this project
 
-Movie to Excel is not intended to compete with Douban as a film platform. Douban already provides movie records, ratings, reviews, social features, and a large user community. This project does not attempt to reproduce those advantages. Its purpose is narrower: it lets you build and maintain a viewing archive that belongs entirely to you, stays as a local Excel file on your computer, and remains easy to search, edit, back up, or move without depending on a social platform.
+Movie to Excel does not try to compete with Douban's ratings, reviews, social features, or community. Its purpose is to let you own a simple, searchable record that you can edit, back up, and move as an ordinary Excel file.
 
 ## 为什么做这个项目
 
-Movie to Excel 并不打算取代豆瓣。豆瓣已经拥有完善的电影条目、评分、评论、社交功能和庞大的用户群，这些都不是本项目的优势。本项目只专注于一件更小、更私人的事情：让用户在自己的电脑上建立一份完全属于自己的本地观影记录。它以 Excel 文件保存，可以随时查询、修改、备份和迁移，不依赖社交平台，也不需要公开自己的观影历史。
+Movie to Excel 不打算复制豆瓣的评分、评论、社交功能或用户社区。它的重点是让你在自己的电脑上保存一份可查询、可修改、可备份和迁移的观影记录。联网只用于核对公开的作品资料；个人观看历史保存在本地 Excel 文件中。
 
-## What it does
+## Workbook
 
-Give Codex a movie title, poster, or screenshot. The plugin resolves the exact film, verifies its Chinese and official English titles, director, year, production region, genre, and source, then creates or updates a local `.xlsx` archive. It detects likely duplicates and keeps personal ratings and notes private.
+The included [blank template](plugins/movie-to-excel/assets/movie-archive-template.xlsx) has seven sheets:
 
-The included workbook offers a region overview, a complete horizontal region layout, and a searchable standard list. `标准清单` is the single source of truth, so presentation can change without losing records.
+| Sheet | Purpose |
+| --- | --- |
+| `My Movies` | All movies grouped across two rows of production regions. The lower row moves down when the upper groups grow. |
+| `Region View` | Six horizontal region lists, each with a director filter. Europe/Oceania and Other Regions also have country filters. |
+| `Master List` | The authoritative, searchable movie list, including optional private rating and notes. |
+| `Statistics` | Local movie totals by region. |
+| `Settings` | The workbook's display and date conventions. |
+| `My TV Series` | Series title, watched seasons, viewing period, and country/region. |
+| `My Documentaries` | Documentary title, director, year, seasons/episodes watched, viewing period, and country/region. |
 
-## Install from GitHub
+Grouped titles show the Chinese title before the official English or original title. For Mainland China, Hong Kong, and Taiwan films, directors use their established Chinese names; for other films, directors use full English or romanized names. A documentary series may have different episode directors, so its director field can remain blank when no single verified director applies.
+
+## Recording rules / 记录规则
+
+- If the user does not explicitly say “TV series” or “documentary,” treat the title as a movie. / 没有明确说“电视剧”或“纪录片”时，默认按电影处理。
+- Append a newly watched title to the end of its movie region or series list. For an existing series, update its progress in the same row. / 新条目追加到对应分类末尾；继续观看同一剧集时更新原行的进度。
+- Keep the viewing date or period at the precision the user provides: `26-09-28`, `26-09`, `26`, `2609`, or a range. Blank means unknown. When no movie date is supplied at all, use today's local date and state that assumption. / 按用户提供的精度记录日期；不知道时留空，完全没说电影观影日期时才默认今天并说明。
+- Record documentary episodes without claiming the whole season was finished. If the volume is unclear, preserve that uncertainty. / 纪录片只记录实际看过的集数，卷数不明就标注待确认。
+- The owner can name the active workbook `观影记录-YYMMDD.xlsx`, where the suffix is its last modification date. Writers accept an explicit output path or an authorized `--in-place` update. / 文件名可以显示最后修改日期；更新同一天的文件可以原位写入。
+
+## Install
 
 ```text
 codex plugin marketplace add wanzhonggu473-kuuu/movie-to-excel --ref main
 ```
 
-Then open the Plugins Directory in the ChatGPT desktop app, choose the **Movie to Excel** marketplace, and install **movie-to-excel**. GitHub marketplace sources and the required repository layout follow the official [OpenAI plugin packaging documentation](https://developers.openai.com/plugins/build/plugins).
+In the Codex plugin directory, select the **Movie to Excel** marketplace and install **movie-to-excel**. The scripts use the spreadsheet runtime bundled with Codex.
 
 ## Use
 
-Examples of natural requests:
+Examples:
 
 ```text
-Add A City of Sadness to my movie archive. I watched it today.
+Add A City of Sadness to my movie archive. I watched it on 26-09-05.
 ```
 
 ```text
-Identify this poster and add the movie to my existing Excel archive. My rating is 8.5.
+Add this poster as a movie. I only remember watching it in 2025.
 ```
-
-If a title is ambiguous, the plugin asks for the year or version before writing. A viewing date supplied by the user always wins, including an earlier date. If the user only says they watched it before, the plugin does not guess a date; if no date is supplied at all, it uses the current local date and states that assumption.
-
-## Workbook structure
-
-- `我的电影`: complete region overview, with Mainland China, Hong Kong, and Taiwan on the first row and the United States, Europe/Oceania, and other regions on the second. Each region lists all of its records.
-- `地区横向`: complete horizontal region layout.
-- `标准清单`: searchable and sortable list.
-- `统计`: local totals by region.
-- `设置`: presentation, language, date, and lookup preferences.
-
-Titles appear as `中文名 / Official English Title` in grouped views. Directors use established Chinese names for productions from Mainland China, Hong Kong, or Taiwan; all other productions use full English or romanized names.
-
-## Privacy
-
-There are no accounts, public profiles, followers, likes, feeds, analytics, or cloud-hosted viewing histories. Ratings and private notes remain inside the local workbook. See [SECURITY.md](SECURITY.md) for the data boundary.
-
-## Repository layout
 
 ```text
-.agents/plugins/marketplace.json
-plugins/movie-to-excel/
-├── .codex-plugin/plugin.json
-├── assets/movie-archive-template.xlsx
-├── examples/verified-movie.example.json
-├── scripts/
-└── skills/movie-to-excel/
+Add this TV series: season 1, watched in September 2026.
 ```
 
-## Development status
+```text
+Add this Netflix documentary series. I watched episodes 1–3 from 26-09-28 to 26-09-30, but I do not know the volume.
+```
 
-Version `0.5.0` is an early working prototype. Title-based identification, region classification, duplicate detection, workbook updates, and synchronized views have been exercised end to end. Poster-identification tests, configurable region rules, larger database capacity, and easier non-Codex installation remain on the roadmap.
+For direct script use, pass verified metadata in a JSON file:
 
-## Contributing and license
+```text
+node plugins/movie-to-excel/scripts/add-movie.mjs --input my-archive.xlsx --output updated-archive.xlsx --movie-file verified-movie.json
+node plugins/movie-to-excel/scripts/add-series.mjs --type documentary --input my-archive.xlsx --output updated-archive.xlsx --record-file verified-documentary.json
+```
 
-Contributions are welcome; read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. Movie to Excel is released under the [MIT License](LICENSE).
+Use `--type tv` for a TV series. Use `--update-existing` when adding more episodes or seasons to an existing entry. `--in-place` is required to overwrite the input workbook. For a fresh archive, copy the blank template and choose an output filename. The `add-movie.mjs` writer detects a likely duplicate by title and year; `--allow-duplicate` is reserved for intentional repeat viewings.
+
+## Privacy and development
+
+The repository includes an empty workbook template. Personal archives belong in `outputs/` or another local folder; `outputs/` and `personal-archives/` are ignored by Git. There are no accounts, public profiles, followers, feeds, or cloud-hosted viewing histories. See [SECURITY.md](SECURITY.md) for the data boundary.
+
+Version `0.6.0` covers local movie, TV, and documentary recording. Movie metadata and workbook views are synchronized by the scripts. Poster identification still depends on the assistant's verification, and country/region classification may require a judgment for international co-productions. Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). The project uses the [MIT License](LICENSE).

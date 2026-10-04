@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0
+
+- Rebuilt the public template as a blank, seven-sheet archive with English sheet names.
+- Added `My TV Series` and `My Documentaries`, including seasons/episodes and flexible viewing periods.
+- Added progress updates for an existing series without creating duplicate rows.
+- Added director filters in all six movie regions and country filters where regions contain multiple countries.
+- Kept complete region lists in the overview; the lower row moves down when the upper row grows.
+- Preserved exact user-supplied full, partial, and unknown viewing dates; synchronized movie counts and views.
+
 ## 0.5.1
 
 - Respect user-provided historical viewing dates; do not silently replace them with today's date.
