@@ -28,6 +28,16 @@ The included [blank template](plugins/movie-to-excel/assets/movie-archive-templa
 
 Grouped titles show the Chinese title before the official English or original title. For Mainland China, Hong Kong, and Taiwan films, directors use their established Chinese names; for other films, directors use full English or romanized names. A documentary series may have different episode directors, so its director field can remain blank when no single verified director applies.
 
+## New: TV series and documentaries / 新增：电视剧与纪录片
+
+`My TV Series` records the seasons you actually watched, the viewing period (normally to the month), and the country or region. A single season is written as `S1`; more seasons can be added later to the same entry. Titles use Chinese first, followed by the official English or original title. You can simply say that a title is a TV series and provide its name, seasons, and viewing period.
+
+`My Documentaries` is a separate list for documentaries and documentary series. It can record a director when one is verified, release year, watched seasons or episodes, viewing period, and country or region. Watching three episodes is recorded as progress such as `E1–E3`, not as completion of the whole series. If a volume or season is uncertain, the record says so rather than guessing. Later viewing updates the existing entry instead of creating another row.
+
+`My TV Series` 用来记录实际看过的季数、观看时期（通常精确到月份）和国家或地区。只看过一季就写 `S1`，以后继续观看可以更新同一条记录。片名先写中文名，再写官方英文名或原名。告诉 Codex“这是电视剧”，再提供名称、季数和观看时期即可。
+
+`My Documentaries` 单独保存纪录片和纪录剧集，可记录核实过的导演、年份、实际看过的季或集、观看时期及国家或地区。比如只看了前三集，就记作 `E1–E3`，不会误写成整季看完；不确定属于哪一卷或哪一季时，会保留“不确定”。以后继续看时更新原条目，不重复新增一行。
+
 ## Recording rules / 记录规则
 
 - If the user does not explicitly say “TV series” or “documentary,” treat the title as a movie. / 没有明确说“电视剧”或“纪录片”时，默认按电影处理。
